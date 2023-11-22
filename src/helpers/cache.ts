@@ -158,11 +158,6 @@ const setHitCounter = async (type: HitCounterUpdateType, searchTerm: string, pag
   const dbItem = await getItem(searchTerm, page);
 
   /**
-   * do NOT perform operation on failed item request
-   */
-  if(!dbItem) return;
-
-  /**
    * update hit counter in DB
    */
   switch (type) {
@@ -178,8 +173,8 @@ const setHitCounter = async (type: HitCounterUpdateType, searchTerm: string, pag
         setItem({
           date: getDateStr(),
           key: getKeyStr(searchTerm, page),
-          total_hits: dbItem.total_hits + 1,
-          cache_hits: dbItem.cache_hits,
+          total_hits: (<ApiRequestItem>dbItem).total_hits + 1,
+          cache_hits: (<ApiRequestItem>dbItem).cache_hits,
         });
       }
 
@@ -197,8 +192,8 @@ const setHitCounter = async (type: HitCounterUpdateType, searchTerm: string, pag
         setItem({
           date: getDateStr(),
           key: getKeyStr(searchTerm, page),
-          total_hits: dbItem.total_hits + 1,
-          cache_hits: dbItem.cache_hits + 1,
+          total_hits: (<ApiRequestItem>dbItem).total_hits + 1,
+          cache_hits: (<ApiRequestItem>dbItem).cache_hits + 1,
         });
       }
 
